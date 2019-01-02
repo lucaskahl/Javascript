@@ -12,12 +12,12 @@ GAME RULES:
 var scores, roundScore, activePlayer, gamePlaying;
 
 init();
+var lastDice;
 
 document.querySelector('.btn-roll').addEventListener('click', ()=> {
   if(gamePlaying) {
     // 1. Random number
-    //dice = Math.floor(Math.random() * 6) + 1;
-    dice = 6;
+    dice = Math.floor(Math.random() * 6) + 1;
 
     //2. display the result
     var diceDOM = document.querySelector('.dice');
@@ -26,12 +26,20 @@ document.querySelector('.btn-roll').addEventListener('click', ()=> {
 
     //3. Update the round score if number != 1
 
-    if(dice != 1) {
-      roundScore+= dice;
+    if (dice === 6 && lastDice === 6) {
+      //Player looses score
+      scores[activePlayer] = 0;
+      document.querySelector('#score-' + activePlayer).textContent = '0';
+      nextPlayer();
+    } else if (dice !== 1) {
+      //Add score
+      roundScore += dice;
       document.querySelector('#current-' + activePlayer).textContent = roundScore;
-    }else{
+    } else {
+      //Next player
       nextPlayer();
     }
+    lastDice = dice;
   }
 });
 
